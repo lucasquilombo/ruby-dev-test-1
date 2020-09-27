@@ -1,0 +1,64 @@
+<h1><%= @diretorio.present? ? @diretorio.nome : "HOME" %></h1>
+
+<%= form_for @novo_diretorio, html: {class: "form-inline"} do |f| %>
+
+    <% if @diretorio.present? %>
+        <%= f.hidden_field :diretorio_pai_id, value: @diretorio.id %>
+    <% end %>
+
+    <div class="form-group mb-2 mr-2">
+        <%= f.label "Novo diretório", class: "sr-only" %>
+        <%= f.text_field :nome, class: "form-control", placeholder: "Novo diretório" %>
+    </div>
+
+    <%= f.submit 'Salvar', class: "btn btn-primary mb-2" %>
+    <% if @diretorio.present? %>
+        <%= link_to 'Voltar', diretorios_path(diretorio: @diretorio.diretorio_pai_id), class: "btn btn-default" %>
+    <% end %>
+<% end %>
+
+<% if flash[:errors] %>
+    <% flash[:errors].each do |error| %>
+        <p style="color: red"><%= error %></p>
+    <% end %>
+<% end %>
+
+<% if @diretorios.size > 0 %>
+    <h2>SUB-DIRETÓRIOS</h2>
+
+    <% @diretorios.each do |diretorio| %>
+        <%= link_to diretorio.nome, diretorios_path(diretorio: diretorio.id), class: "btn btn-info" %>
+    <% end %>
+<% end %>
+
+<hr>
+
+<% if @diretorio.present? %>
+    <h2>ARQUIVOS</h2>
+    <%= form_for @diretorio, url: diretorio_arquivos_path(@diretorio), method: :post, html: {class: "form-inline mb-2"} do |f| %>
+        <div class="form-group">
+            <%= f.file_field :arquivos, multiple: true, disable: true, class: "form-control-file", onchange: "this.form.submit();" %>
+        </div>
+    <% end %>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Arquivo</th>
+                        <th>Ações</th>
+                    <tr>
+                </thead>
+                <tbody>
+                    <% @diretorio.arquivos.each_with_index do |arquivo, index| %>
+                        <tr>
+                            <td><%= link_to arquivo.file.filename, arquivo.url, target: '_blank' %></td>
+                            <td><%= link_to 'Excluir', diretorio_arquivo_path(@diretorio, index), method: :delete, data: { confirm: 'Confirma a exclusão?' } %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<% end %>

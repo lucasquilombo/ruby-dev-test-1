@@ -1,0 +1,19 @@
+@import "~bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Merriweather:400,700');
+
+body {
+    background-color: #cecece;
+}
+
+.conteudo-principal {
+    background-color: #fff;
+}
+
+h1 {
+    padding-left: 15px;
+    background-color: #cecece;
+}
+
+.divider {
+    border: 1rem solid #212529;
+}
