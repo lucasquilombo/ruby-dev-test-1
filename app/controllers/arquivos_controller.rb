@@ -26,8 +26,8 @@ class ArquivosController < ApplicationController
     end
   
     def remove_image_at_index(index)
-        remain_arquivos = @diretorio.arquivos
-        if index == 0 && @diretorio.arquivos.size == 1
+        remain_arquivos = @diretorio.documentos
+        if index == 0 && @diretorio.documentos.size == 1
             @diretorio.remove_arquivos!
         else
             deleted_image = remain_arquivos.delete_at(index) 

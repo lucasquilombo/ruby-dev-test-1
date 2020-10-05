@@ -1,0 +1,17 @@
+<tr>
+    <td><%= (documento.is_a? Diretorio) ?
+        "<i class=\"far fa-folder\"></i>".html_safe
+        :
+        "<i class=\"far fa-file\"></i>".html_safe
+    %></td>
+    <td><%= (documento.is_a? Diretorio) ?
+        (link_to documento.nome, diretorios_path(diretorio: documento.id))
+        :
+        (link_to documento.file.filename, documento.url, target: '_blank')
+    %></td>
+    <td class="acoes"><%= (documento.is_a? Diretorio) ?
+        (link_to '<i class="fas fa-trash text-dark"></i>'.html_safe, diretorio_path(documento), title: "Excluir", method: :delete, data: { confirm: 'Confirma a exclusão?' })
+        :
+        (link_to '<i class="fas fa-trash text-dark"></i>'.html_safe, diretorio_arquivo_path(@diretorio, documento_counter), title: "Excluir", method: :delete, data: { confirm: 'Confirma a exclusão?' })
+    %></td>
+</tr>

@@ -1,9 +1,21 @@
 class DiretoriosController < ApplicationController
+    respond_to :html, :js, only: [:index]
+
     def index
-        @diretorios = Diretorio.diretorio_atual(params[:diretorio]).order(:nome)
         @novo_diretorio = Diretorio.new
-        
-        @diretorio = Diretorio.find_by_id(params[:diretorio]) if params[:diretorio].present?
+
+        if params[:pagina].present?
+            @pagina = params[:pagina].to_i + 1
+        else
+            @pagina = 1
+        end
+
+        if params[:diretorio].present?
+            @diretorio = Diretorio.find(params[:diretorio])
+            @documentos = @diretorio.documentos(pagina: @pagina)
+        else
+            @documentos = Diretorio.documentos_home(pagina: @pagina)
+        end
     end
 
     def create
@@ -17,7 +29,7 @@ class DiretoriosController < ApplicationController
     end
 
     def update
-        @diretorio = Diretorio.find_by_id(params[:id])
+        @diretorio = Diretorio.find(params[:id])
         if not @diretorio.update(diretorio_params)
             flash[:errors] = @diretorio.errors.full_messages
         end
@@ -26,12 +38,17 @@ class DiretoriosController < ApplicationController
     end
 
     def destroy
+        @diretorio = Diretorio.find(params[:id])
+        diretorio_pai_id = @diretorio.diretorio_pai_id
+        
+        @diretorio.destroy
+
+        redirect_to diretorios_path(diretorio: diretorio_pai_id)
     end
 
     private
 
     def diretorio_params
-        # params.require(:diretorio).permit(:nome, :diretorio_pai_id, {arquivos: []})
         params.require(:diretorio).permit(:nome, :diretorio_pai_id)
     end
 end

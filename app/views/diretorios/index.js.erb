@@ -1,0 +1,5 @@
+<% if @documentos.current_page >= @documentos.total_pages %>
+    $(".btn-ver-mais").hide();
+<% end %>
+$(".btn-ver-mais").attr("href", "<%= diretorios_path(diretorio: @diretorio, pagina: @pagina) %>");
+$("#conteudo-tabela").append("<%= j(render partial: "conteudo_tabela", collection: @documentos, as: :documento) %>");

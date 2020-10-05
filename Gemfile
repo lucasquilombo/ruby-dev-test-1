@@ -30,6 +30,12 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'carrierwave', '~> 2.1'
 
+gem 'font-awesome-sass', '~> 5.13.0'
+
+gem 'will_paginate', '~> 3.1.0'
+
+gem "responders", '~> 3.0.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
